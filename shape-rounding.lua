@@ -19,11 +19,28 @@ function round_numbers(subs, sel)
 end
 
 function cleanStr(str)
+	local newStr
+	newStr= matchStr(
+	str,
+	"m ([%-%d%.mnlbspc ]+)", -- re_str
+	"([%-%d%.mnlbspc]+)",	 -- re_str_split
+	" " -- concat_sep
+	)
+	newStr = matchStr(
+	newStr,
+	"clip%(([%-%d%.%,]+)%)",
+	"([%-%d%.]+)",
+	","
+	)	
+    return newStr
+end
+
+function matchStr(str,re_str,re_str_split,concat_sep)
 	local newStr = str
-    for drawStr in string.gmatch(newStr,"m ([%-%d%.mnlbspc ]+)") do
+    for drawStr in string.gmatch(newStr,re_str) do
 		local Str_table = {}
 		local i = 1
-		for numStr in string.gmatch(drawStr,"([%-%d%.mnlbspc]+)") do
+		for numStr in string.gmatch(drawStr,re_str_split) do
 			Str_table[i] = tonumber(numStr) or numStr
 			i = i + 1
 		end
@@ -34,13 +51,17 @@ function cleanStr(str)
 			end
 		end
 		drawStr = drawStr:gsub("%-","%%%-")
-		newStr=newStr:gsub(drawStr,table.concat(Str_table," "))
+		newStr=newStr:gsub(drawStr,table.concat(Str_table,concat_sep))
     end
     return newStr
 end
 
 function round(x)
-    return math.ceil(x-0.5)
+    if x%2 ~= 0.5
+    then
+        return math.floor(x+0.5)
+    end
+    return x-0.5
 end
 
 aegisub.register_macro(script_name, script_description, round_numbers)
