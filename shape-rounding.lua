@@ -40,11 +40,7 @@ function cleanStr(str)
 end
 
 function round(x)
-    if x%2 ~= 0.5
-    then
-        return math.floor(x+0.5)
-    end
-    return x-0.5
+    return math.ceil(x-0.5)
 end
 
 aegisub.register_macro(script_name, script_description, round_numbers)
