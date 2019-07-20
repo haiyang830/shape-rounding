@@ -1,5 +1,3 @@
--- shape rounding
-
 local tr = aegisub.gettext
 
 script_name = tr"shape rounding"
@@ -57,10 +55,7 @@ function matchStr(str, re_str, re_str_split, concat_sep)
 end
 
 function round(x)
-    if x%2 ~= 0.5 then
-		return math.floor(x+0.5)
-	end
-	return x-0.5
+	return math.floor(x + 0.5)
 end
 
 aegisub.register_macro(script_name, script_description, shape_rounding)
